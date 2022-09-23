@@ -31,7 +31,7 @@ resource "intersight_fabric_system_qos_policy" "system_qos" {
     data.intersight_fabric_switch_profile.profiles,
     data.intersight_organization_organization.org_moid
   ]
-  description = var.description
+  description = var.description != "" ? var.description : "${var.name} System QoS Policy."
   name        = var.name
   organization {
     moid        = data.intersight_organization_organization.org_moid.results[0].moid
