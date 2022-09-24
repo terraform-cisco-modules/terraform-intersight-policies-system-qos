@@ -1,25 +1,10 @@
-terraform {
-  experiments = [module_variable_optional_attrs]
-}
-
 #____________________________________________________________
 #
 # System QoS Policy Variables Section.
 #____________________________________________________________
 
 variable "classes" {
-  default = [
-    {
-      bandwidth_percent  = 50
-      class              = "Best Effort"
-      cos                = 0
-      mtu                = 1500
-      multicast_optimize = false
-      packet_drop        = true
-      state              = "Disabled"
-      weight             = 0
-    }
-  ]
+  default     = []
   description = <<-EOT
     * bandwidth_percent - Percentage of bandwidth Assigned to traffic traffic tagged with this Class.
     * class - Name of the priority class.
@@ -56,12 +41,12 @@ variable "classes" {
     {
       bandwidth_percent  = optional(number)
       class              = string
-      cos                = optional(number)
-      mtu                = optional(number)
-      multicast_optimize = optional(bool)
-      packet_drop        = optional(bool)
-      state              = optional(string)
-      weight             = optional(number)
+      cos                = optional(number, 255)
+      mtu                = optional(number, 1500)
+      multicast_optimize = optional(bool, false)
+      packet_drop        = optional(bool, true)
+      state              = optional(string, "Disabled")
+      weight             = optional(number, 5)
     }
   ))
 }
