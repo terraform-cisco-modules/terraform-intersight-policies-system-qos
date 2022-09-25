@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ### main.tf
 ```hcl
-module "system_qos_policy" {
+module "system_qos" {
   source  = "terraform-cisco-modules/policies-system-qos/intersight"
   version = ">= 1.0.1"
 
@@ -79,6 +79,19 @@ module "system_qos_policy" {
 }
 ```
 
+### provider.tf
+```hcl
+terraform {
+  required_providers {
+    intersight = {
+      source  = "CiscoDevNet/intersight"
+      version = ">=1.0.32"
+    }
+  }
+  required_version = ">=1.3.0"
+}
+```
+
 ### variables.tf
 ```hcl
 variable "apikey" {
@@ -97,24 +110,6 @@ variable "secretkey" {
   description = "Intersight Secret Key."
   sensitive   = true
   type        = string
-}
-```
-
-### versions.tf
-```hcl
-terraform {
-  required_providers {
-    intersight = {
-      source  = "CiscoDevNet/intersight"
-      version = ">=1.0.32"
-    }
-  }
-}
-
-provider "intersight" {
-  apikey    = var.apikey
-  endpoint  = var.endpoint
-  secretkey = var.secretkey
 }
 ```
 <!-- END_TF_DOCS -->

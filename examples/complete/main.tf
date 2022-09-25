@@ -1,4 +1,4 @@
-module "system_qos_policy" {
+module "system_qos" {
   source  = "terraform-cisco-modules/policies-system-qos/intersight"
   version = ">= 1.0.1"
 
