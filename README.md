@@ -1,5 +1,8 @@
 <!-- BEGIN_TF_DOCS -->
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Developed by: Cisco](https://img.shields.io/badge/Developed%20by-Cisco-blue)](https://developer.cisco.com)
 [![Tests](https://github.com/terraform-cisco-modules/terraform-intersight-policies-system-qos/actions/workflows/terratest.yml/badge.svg)](https://github.com/terraform-cisco-modules/terraform-intersight-policies-system-qos/actions/workflows/terratest.yml)
+
 # Terraform Intersight Policies - System QoS
 Manages Intersight System QoS Policies
 
@@ -95,7 +98,7 @@ terraform {
 provider "intersight" {
   apikey    = var.apikey
   endpoint  = var.endpoint
-  secretkey = var.secretkey
+  secretkey = fileexists(var.secretkeyfile) ? file(var.secretkeyfile) : var.secretkey
 }
 ```
 
@@ -114,7 +117,15 @@ variable "endpoint" {
 }
 
 variable "secretkey" {
-  description = "Intersight Secret Key."
+  default     = ""
+  description = "Intersight Secret Key Content."
+  sensitive   = true
+  type        = string
+}
+
+variable "secretkeyfile" {
+  default     = "blah.txt"
+  description = "Intersight Secret Key File Location."
   sensitive   = true
   type        = string
 }
@@ -123,19 +134,13 @@ variable "secretkey" {
 ## Environment Variables
 
 ### Terraform Cloud/Enterprise - Workspace Variables
-- Add variable apikey with value of [your-api-key]
-- Add variable secretkey with value of [your-secret-file-content]
+- Add variable apikey with the value of [your-api-key]
+- Add variable secretkey with the value of [your-secret-file-content]
 
-### Linux
+### Linux and Windows
 ```bash
 export TF_VAR_apikey="<your-api-key>"
-export TF_VAR_secretkey=`cat <secret-key-file-location>`
-```
-
-### Windows
-```bash
-$env:TF_VAR_apikey="<your-api-key>"
-$env:TF_VAR_secretkey="<secret-key-file-location>"
+export TF_VAR_secretkeyfile="<secret-key-file-location>"
 ```
 
 ## Requirements
